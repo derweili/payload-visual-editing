@@ -67,8 +67,8 @@ const title = computed(() => video.value.title ?? 'Visual editing for Payload: d
 }
 @media (min-width: 960px) {
   .pve-video {
-    padding: 0 64px;
-    margin-top: -16px;
+    padding: 0 0;
+    margin-block: 100px;
   }
 }
 .frame {
