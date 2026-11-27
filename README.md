@@ -67,7 +67,9 @@ pnpm docs:build   # build the documentation; fails on dead links
 - **CI** (`.github/workflows/ci.yml`): typecheck, tests, the pack check and the e2e tests on every
   pull request.
 - **Docs:** a VitePress site in [`docs/`](./docs) (guides, reference, architecture, ADRs). The
-  homepage (`docs/index.md`) is a placeholder for a later marketing page.
+  homepage (`docs/index.md`) is the marketing page; its components live in
+  `docs/.vitepress/theme/`. The demo video is hosted elsewhere: set `video.src` in the
+  homepage frontmatter.
 - **Agent skills:** [`skills/`](./skills), installable with `npx skills add`. Keep them in step
   with the API when it changes.
 - **Decisions:** [docs/adr](./docs/adr).
