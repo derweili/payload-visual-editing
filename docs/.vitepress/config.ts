@@ -12,7 +12,7 @@ export default defineConfig({
   lastUpdated: true,
 
   head: [
-    ['meta', { name: 'theme-color', content: '#ef4c00' }],
+    ['meta', { name: 'theme-color', content: '#168b49' }],
     ['link', { rel: 'icon', type: 'image/svg+xml', href: '/logo.svg' }],
   ],
 
@@ -21,7 +21,6 @@ export default defineConfig({
   },
 
   themeConfig: {
-    logo: { light: '/logo.svg', dark: '/logo-dark.svg' },
 
     nav: [
       { text: 'Guide', link: '/guide/getting-started', activeMatch: '/guide/' },

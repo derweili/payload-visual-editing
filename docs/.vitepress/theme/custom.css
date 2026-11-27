@@ -46,8 +46,15 @@
   font-weight: 600;
   letter-spacing: -0.02em;
 }
-.VPNavBar .title .logo {
+/* Nav logo drawn as a mask, so it follows the brand colour (no fixed-colour image). */
+.VPNavBarTitle .title::before {
+  content: '';
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
   margin-right: 10px;
+  background-color: var(--primary);
+  mask: url('/logo.svg') center / contain no-repeat;
 }
 .vp-doc h1,
 .vp-doc h2,
