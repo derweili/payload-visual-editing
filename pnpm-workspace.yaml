@@ -1,5 +1,7 @@
 packages:
   - packages/*
+  # Demo site (Next + Payload on Neon/Vercel). Not published.
+  - apps/*
 
 allowBuilds:
   esbuild: true
