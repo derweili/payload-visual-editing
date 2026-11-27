@@ -24,6 +24,18 @@ breaking changes.
 - Payload 3.94+ with the Next.js admin (`@payloadcms/next`)
 - Next.js 15.4+ or 16, React 19
 - At least one collection or global with drafts (`versions: { drafts: true }`) that your site renders
+- For clicks inside the Live Preview: Payload's own [Live Preview](https://payloadcms.com/docs/live-preview/overview),
+  configured and working
+
+::: info Builds on Payload's preview
+Visual editing doesn't replace Payload's preview, it adds click-to-edit on top of it. For the
+Live Preview, first set up Payload's
+[Live Preview](https://payloadcms.com/docs/live-preview/overview): `admin.livePreview.url` on
+your collections and globals, and a frontend that re-renders drafts, for example with
+[server-side Live Preview](https://payloadcms.com/docs/live-preview/server). For a preview in its
+own tab, a Draft Mode route is enough (step 3); Payload's
+[Preview button](https://payloadcms.com/docs/admin/preview) can link to it.
+:::
 
 ## 1. Install the packages
 
@@ -47,7 +59,7 @@ yarn add @derweili/payload-visual-editing @derweili/payload-visual-editing-overl
 
 List the collections and globals that should be clickable:
 
-```ts [payload.config.ts]
+```ts {7-10} [payload.config.ts]
 import { buildConfig } from 'payload'
 import { visualEditingPlugin } from '@derweili/payload-visual-editing/server'
 
@@ -114,7 +126,7 @@ export async function GET() {
 
 Wherever the site fetches content, ask for source maps **only in Draft Mode**:
 
-```ts
+```ts {9}
 import { draftMode } from 'next/headers'
 
 const { isEnabled: draft } = await draftMode()
@@ -140,7 +152,7 @@ More in [Caching and production safety](./caching).
 
 Render `<VisualEditing />` in Draft Mode, for example in the frontend's root layout:
 
-```tsx [app/(frontend)/layout.tsx]
+```tsx {10} [app/(frontend)/layout.tsx]
 import { draftMode } from 'next/headers'
 import { VisualEditing } from '@derweili/payload-visual-editing-overlay/react'
 
@@ -167,7 +179,7 @@ If the admin runs on a different origin or route, pass `serverURL` / `adminRoute
 Encoded strings look normal but aren't equal to their visible text. Wrap every string that is used
 for more than display (comparisons, URLs, `<title>`, metadata, form values) in `stegaClean`:
 
-```ts
+```ts {5}
 import { stegaClean } from '@derweili/payload-visual-editing-overlay/vanilla'
 
 export async function generateMetadata() {

@@ -1,4 +1,4 @@
-# Known issues
+# Known limitations
 
 - **Long forms: fields far down are reached by scrolling (workaround).** Payload renders each list
   of fields only once it comes within 1000 px of the viewport, and has no API to force it. When the

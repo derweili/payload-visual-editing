@@ -17,7 +17,11 @@ Read these before changing anything:
   follows the lockfile (`pnpm-lock.yaml`, `package-lock.json`, `yarn.lock`, `bun.lock`).
 - The Payload config (usually `src/payload.config.ts`): which collections and globals the site
   renders, which have `versions: { drafts: true }`, `routes.admin` if not `/admin`, and existing
-  `admin.livePreview` settings.
+  `admin.livePreview` settings. Visual editing builds on Payload's own Live Preview and doesn't
+  replace it: if the project wants clicks inside the Live Preview but has no working Live Preview
+  yet (preview URL plus a frontend that re-renders drafts, e.g. `RefreshRouteOnSave`), tell the
+  user it is a prerequisite and point to https://payloadcms.com/docs/live-preview/overview.
+  Also note `localization`: localized projects are supported; keep the `locale` in preview URLs.
 - The frontend: where content is fetched (Local API `payload.find*` or REST), whether a Draft Mode
   route already exists (`draftMode().enable()`), and which data reads are cached
   (`unstable_cache`, `"use cache"`, `fetch` cache).

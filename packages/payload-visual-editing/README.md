@@ -121,7 +121,7 @@ All access to Payload's admin markup sits in one module (`src/client/dom-adapter
 `test/payload-markup.test.ts` fails when an installed Payload version no longer renders what it
 relies on. When markup does change, focusing stops working silently; it never throws.
 
-## Known issues
+## Known limitations
 
 - **Long forms: fields far down are reached by scrolling (workaround).** Payload renders each list
   of fields only once it comes within 1000 px of the viewport, and has no API to force it. When the

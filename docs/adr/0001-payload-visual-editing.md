@@ -184,7 +184,7 @@ left unencoded (excluded, or URL-like under "auto") have none, so they weren't c
   ancestor only (misses fields under collapsibles, rows and unnamed tabs, and deep rows of long
   arrays), and forcing Payload to render (faked IntersectionObserver or patching; relies on
   internals).
-  Listed under "Known issues" in the plugin README. Replace it if Payload ever offers a way to
+  Listed under "Known limitations" in the plugin README. Replace it if Payload ever offers a way to
   render a field on demand.
 
 ## 13. Build, release and repository

@@ -42,6 +42,13 @@ Then ask your agent to "set up Payload visual editing". More in
 Requirements: Payload 3.94+, Next.js 15.4+ / 16, React 19. Runs on Cloudflare Workers (no
 Node-only APIs in package code).
 
+- **Builds on Payload's preview.** For clicks inside the Live Preview, set up Payload's own
+  [Live Preview](https://payloadcms.com/docs/live-preview/overview) first; this plugin adds
+  click-to-edit on top and doesn't configure it. See [docs/guide/live-preview.md](./docs/guide/live-preview.md).
+- **Multilingual sites are supported and tested.** With Payload
+  [localization](https://payloadcms.com/docs/configuration/localization), the admin opens the
+  field in the locale of the page. The e2e tests run against a two-locale site.
+
 ## Development
 
 ```sh

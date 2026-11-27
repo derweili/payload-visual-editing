@@ -1,3 +1,4 @@
+import tailwindcss from '@tailwindcss/vite'
 import { defineConfig } from 'vitepress'
 
 const repo = 'https://github.com/derweili/payload-visual-editing'
@@ -11,12 +12,16 @@ export default defineConfig({
   lastUpdated: true,
 
   head: [
-    ['meta', { name: 'theme-color', content: '#3b82f6' }],
+    ['meta', { name: 'theme-color', content: '#ef4c00' }],
     ['link', { rel: 'icon', type: 'image/svg+xml', href: '/logo.svg' }],
   ],
 
+  vite: {
+    plugins: [tailwindcss()],
+  },
+
   themeConfig: {
-    logo: '/logo.svg',
+    logo: { light: '/logo.svg', dark: '/logo-dark.svg' },
 
     nav: [
       { text: 'Guide', link: '/guide/getting-started', activeMatch: '/guide/' },
@@ -40,7 +45,7 @@ export default defineConfig({
           { text: 'stegaClean pitfalls', link: '/guide/stega-clean' },
           { text: 'Live Preview', link: '/guide/live-preview' },
           { text: 'Caching and production safety', link: '/guide/caching' },
-          { text: 'Known issues', link: '/guide/known-issues' },
+          { text: 'Known limitations', link: '/guide/known-limitations' },
         ],
       },
       {

@@ -4,6 +4,15 @@ Inside Payload's [Live Preview](https://payloadcms.com/docs/live-preview/overvie
 "Edit" focuses the field next to the page, in the same tab. The overlay needs nothing extra: inside
 the iframe it talks to the admin through `postMessage`.
 
+::: warning Prerequisite: Payload's Live Preview
+This plugin builds on Payload's own Live Preview and doesn't set it up for you. Configure it first,
+following Payload's [Live Preview docs](https://payloadcms.com/docs/live-preview/overview): the
+preview URL below, plus a frontend that re-renders when the draft changes
+([server-side](https://payloadcms.com/docs/live-preview/server) with `RefreshRouteOnSave`, or
+client-side with `useLivePreview`). Once the page shows and refreshes in the Live Preview pane,
+visual editing works there without extra setup.
+:::
+
 ## Configure the preview URL
 
 Point the collection's `admin.livePreview.url` at your Draft Mode route:
@@ -57,4 +66,4 @@ content report, with `buildAdminUrl` from the [core package](/reference/core).
 - Keeps the field centred while lazy content above it still loads, and stops at the first scroll,
   click or key press.
 
-Limits are listed in [Known issues](./known-issues).
+Limits are listed in [Known limitations](./known-limitations).

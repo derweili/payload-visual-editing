@@ -41,6 +41,9 @@ hidden characters carry `data-` attributes instead.
 - Payload 3.94+
 - Next.js 15.4+ or 16
 - React 19
+- For clicks inside the Live Preview: Payload's own
+  [Live Preview](https://payloadcms.com/docs/live-preview/overview), already set up. Visual
+  editing builds on it and doesn't configure it for you. See [Live Preview](./live-preview).
 
 Package code uses no Node-only APIs, so it runs on Cloudflare Workers.
 
@@ -49,6 +52,11 @@ Package code uses no Node-only APIs, so it runs on Cloudflare Workers.
 **Supported:** `text`, `textarea` and Lexical `richText` in collections and globals; paths through
 arrays, groups, named and unnamed tabs, collapsibles, rows, blocks and localized fields; source
 tags for images, numbers, relationships, selects and dates.
+
+**Multilingual sites:** supported and tested. With Payload
+[localization](https://payloadcms.com/docs/configuration/localization), every ref carries the
+locale, and the admin opens the field in that locale. The end-to-end tests run against a site
+with two locales, localized fields and a localized global.
 
 **Not supported (for now):** inline editing on the page, drag & drop or adding blocks from the
 preview, highlighting in the preview when a field is focused in the admin, and tested support for

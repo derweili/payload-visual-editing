@@ -1,158 +1,56 @@
-/* Brand: cyan → blue → violet, matching the logo and the demo video. */
-:root {
-  --pve-cyan: #22d3ee;
-  --pve-blue: #3b82f6;
-  --pve-violet: #8b5cf6;
-  --pve-gradient: linear-gradient(100deg, var(--pve-cyan) 0%, var(--pve-blue) 45%, var(--pve-violet) 100%);
-
-  --vp-c-brand-1: #2563eb;
-  --vp-c-brand-2: #3b82f6;
-  --vp-c-brand-3: #2563eb;
-  --vp-c-brand-soft: rgba(59, 130, 246, 0.14);
-
-  --vp-home-hero-name-color: transparent;
-  --vp-home-hero-name-background: var(--pve-gradient);
-  --vp-home-hero-image-background-image: linear-gradient(135deg, rgba(34, 211, 238, 0.55), rgba(139, 92, 246, 0.55));
-  --vp-home-hero-image-filter: blur(56px);
-}
-
+/*
+ * Docs pages: the VitePress default theme, re-coloured with the landing page tokens
+ * (warm neutrals, orange primary, Inter Tight + JetBrains Mono). Tokens live in landing.css.
+ */
+:root,
 .dark {
-  --vp-c-brand-1: #60a5fa;
-  --vp-c-brand-2: #3b82f6;
-  --vp-c-brand-3: #2563eb;
-  --vp-c-brand-soft: rgba(96, 165, 250, 0.16);
+  --vp-font-family-base: var(--font-sans);
+  --vp-font-family-mono: var(--font-mono);
+
+  --vp-c-bg: var(--background);
+  --vp-c-bg-alt: var(--muted);
+  --vp-c-bg-elv: var(--card);
+  --vp-c-bg-soft: var(--muted);
+
+  --vp-c-text-1: var(--foreground);
+  --vp-c-text-2: var(--muted-foreground);
+
+  --vp-c-divider: var(--border);
+  --vp-c-border: var(--input);
+  --vp-c-gutter: var(--border);
+
+  --vp-c-brand-1: var(--primary);
+  --vp-c-brand-2: var(--primary);
+  --vp-c-brand-3: var(--primary);
+  --vp-c-brand-soft: color-mix(in oklch, var(--primary) 14%, transparent);
+
+  --vp-button-brand-text: var(--primary-foreground);
+  --vp-button-brand-hover-text: var(--primary-foreground);
+  --vp-button-brand-active-text: var(--primary-foreground);
+
+  --vp-code-block-bg: var(--code);
+  --vp-code-copy-code-bg: var(--code);
+  --vp-nav-logo-height: 28px;
 }
 
-/* Hero: a soft glow behind the page top */
-.VPHome {
-  position: relative;
+/* Code blocks use the dark code surface in both modes, like the landing page. */
+:root:not(.dark) .vp-doc div[class*='language-'] {
+  --vp-code-block-color: var(--code-foreground);
 }
-.VPHome::before {
-  content: '';
-  position: absolute;
-  inset: -200px 0 auto 0;
-  height: 900px;
-  background:
-    radial-gradient(40% 50% at 20% 30%, rgba(59, 130, 246, 0.16), transparent 70%),
-    radial-gradient(35% 45% at 85% 20%, rgba(139, 92, 246, 0.14), transparent 70%),
-    radial-gradient(30% 40% at 60% 70%, rgba(34, 211, 238, 0.1), transparent 70%);
-  pointer-events: none;
-  z-index: -1;
+:root:not(.dark) .vp-doc div[class*='language-'] .shiki span {
+  color: var(--shiki-dark, inherit) !important;
 }
 
-.VPHero .text {
-  letter-spacing: -0.02em;
-}
-.VPHero .image-src {
-  filter: drop-shadow(0 24px 60px rgba(59, 130, 246, 0.45));
-}
-
-/* Features: lift + gradient border on hover */
-.VPFeature {
-  transition:
-    border-color 0.25s,
-    transform 0.25s,
-    box-shadow 0.25s;
-}
-.VPFeature:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 18px 40px -24px rgba(59, 130, 246, 0.55);
-}
-.VPFeature .VPImage {
-  margin-bottom: 20px;
-  filter: drop-shadow(0 8px 18px rgba(59, 130, 246, 0.45));
-}
-.VPHome .VPFeatures {
-  padding-top: 72px;
-}
-
-/* Shared section styles for the homepage components */
-.pve-section {
-  max-width: 1152px;
-  margin: 0 auto;
-  padding: 96px 24px 0;
-}
-@media (min-width: 640px) {
-  .pve-section {
-    padding: 112px 48px 0;
-  }
-}
-@media (min-width: 960px) {
-  .pve-section {
-    padding: 128px 64px 0;
-  }
-}
-.pve-eyebrow {
-  font-size: 13px;
+.VPNavBar .title {
+  font-size: 15px;
   font-weight: 600;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--vp-c-brand-1);
-  margin: 0 0 12px;
-}
-.pve-title {
-  font-size: clamp(28px, 4vw, 40px);
-  line-height: 1.15;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  margin: 0 0 16px;
-  color: var(--vp-c-text-1);
-}
-.pve-title .grad,
-.pve-md h2 .grad {
-  background: var(--pve-gradient);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-.pve-lead {
-  font-size: 18px;
-  line-height: 1.6;
-  color: var(--vp-c-text-2);
-  max-width: 640px;
-  margin: 0;
-}
-.pve-center {
-  text-align: center;
-}
-.pve-center .pve-lead {
-  margin: 0 auto;
-}
-
-/* Markdown sections on the homepage (setup) */
-.pve-md.vp-doc h2 {
-  border-top: 0;
-  margin: 0 0 16px;
-  padding-top: 0;
-  font-size: clamp(28px, 4vw, 40px);
-  line-height: 1.15;
-  font-weight: 700;
   letter-spacing: -0.02em;
 }
-.pve-md.vp-doc h3 {
-  margin-top: 40px;
+.VPNavBar .title .logo {
+  margin-right: 10px;
 }
-.pve-md .pve-eyebrow {
-  margin-bottom: 12px;
-}
-.pve-setup {
-  display: grid;
-  gap: 8px 48px;
-}
-.pve-setup > div {
-  min-width: 0;
-}
-@media (min-width: 960px) {
-  .pve-setup {
-    grid-template-columns: 5fr 7fr;
-    align-items: start;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .VPFeature,
-  .VPFeature:hover {
-    transition: none;
-    transform: none;
-  }
+.vp-doc h1,
+.vp-doc h2,
+.vp-doc h3 {
+  letter-spacing: -0.02em;
 }

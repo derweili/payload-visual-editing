@@ -1,23 +1,18 @@
+import '@fontsource/inter-tight/400.css'
+import '@fontsource/inter-tight/500.css'
+import '@fontsource/inter-tight/600.css'
+import '@fontsource/inter-tight/700.css'
+import '@fontsource/jetbrains-mono/400.css'
+import '@fontsource/jetbrains-mono/500.css'
 import type { Theme } from 'vitepress'
 import DefaultTheme from 'vitepress/theme'
-import { h } from 'vue'
-import HomeCta from './components/HomeCta.vue'
-import HomeScope from './components/HomeScope.vue'
-import HomeSteps from './components/HomeSteps.vue'
-import HomeUnderTheHood from './components/HomeUnderTheHood.vue'
-import HomeVideo from './components/HomeVideo.vue'
+import LandingPage from './landing/LandingPage.vue'
+import './landing.css'
 import './custom.css'
 
 export default {
   extends: DefaultTheme,
-  Layout: () =>
-    h(DefaultTheme.Layout, null, {
-      'home-hero-after': () => h(HomeVideo),
-    }),
   enhanceApp({ app }) {
-    app.component('HomeSteps', HomeSteps)
-    app.component('HomeUnderTheHood', HomeUnderTheHood)
-    app.component('HomeScope', HomeScope)
-    app.component('HomeCta', HomeCta)
+    app.component('LandingPage', LandingPage)
   },
 } satisfies Theme

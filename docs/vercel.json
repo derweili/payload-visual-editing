@@ -3,5 +3,12 @@
   "framework": "vitepress",
   "buildCommand": "pnpm run build",
   "outputDirectory": ".vitepress/dist",
-  "cleanUrls": true
+  "cleanUrls": true,
+  "redirects": [
+    {
+      "source": "/guide/known-issues",
+      "destination": "/guide/known-limitations",
+      "permanent": true
+    }
+  ]
 }
