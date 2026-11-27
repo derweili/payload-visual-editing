@@ -6,7 +6,7 @@ including fields inside tabs, groups, arrays and blocks.
 
 Why build it: Payload's Content Link is enterprise-only and Vercel-only, payload-better-editor only
 supports `blocks` fields, and the inline-editing plugins are text-only. The decisions behind each
-part are in [docs/adr](./adr); where this page and an ADR disagree, the ADR wins.
+part are in [docs/adr](./adr/); where this page and an ADR disagree, the ADR wins.
 
 ## Scope
 

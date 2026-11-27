@@ -12,6 +12,9 @@
     "pack:check": "pnpm --filter @derweili/payload-visual-editing-dev pack:check",
     "dev": "pnpm --filter @derweili/payload-visual-editing-dev dev",
     "dev:demo": "pnpm --filter @derweili/payload-visual-editing-demo dev",
+    "docs:dev": "pnpm --filter @derweili/payload-visual-editing-docs dev",
+    "docs:build": "pnpm --filter @derweili/payload-visual-editing-docs build",
+    "docs:preview": "pnpm --filter @derweili/payload-visual-editing-docs preview",
     "changeset": "changeset"
   },
   "devDependencies": {
