@@ -1,8 +1,16 @@
 {
   "name": "@derweili/payload-visual-editing",
   "version": "0.1.0",
-  "private": true,
   "description": "Visual editing for Payload 3: stega source maps and click-to-focus in the admin",
+  "keywords": [
+    "payload",
+    "payloadcms",
+    "payload-plugin",
+    "visual-editing",
+    "live-preview",
+    "nextjs",
+    "cms"
+  ],
   "license": "MIT",
   "author": "Julian Weiland",
   "repository": {
