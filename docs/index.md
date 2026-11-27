@@ -1,13 +1,16 @@
 ---
 layout: home
-
-# Placeholder homepage. This page will become the marketing page for the toolset;
-# the copy, hero image and feature list below are stand-ins until then.
+markdownStyles: false
+title: Visual editing for Payload
+titleTemplate: No more hunting for fields in the CMS
 
 hero:
-  name: Payload Visual Editing
-  text: Click the page. Land on the field.
-  tagline: '[Placeholder tagline] Sanity-style visual editing for Payload 3 and Next.js: from any text, image or number in the preview straight to the field in the admin.'
+  name: Visual editing for Payload
+  text: No more hunting for fields in the CMS.
+  tagline: Which tab was it? Which block, which row? Your editors stop guessing. They click any text, image or number on the page, and Payload opens the exact field. For Payload 3 and Next.js.
+  image:
+    src: /logo.svg
+    alt: Visual editing for Payload
   actions:
     - theme: brand
       text: Get started
@@ -19,31 +22,116 @@ hero:
       text: GitHub
       link: https://github.com/derweili/payload-visual-editing
 
+# Demo video below the hero (rendered by .vitepress/theme/components/HomeVideo.vue).
+# Set `src` to a hosted .mp4/.webm, or `embed` to an iframe URL (YouTube, Vimeo, …).
+# Without either, a placeholder frame is shown.
+video:
+  src: https://static-video.derweili.de/payload-visual-editing.mp4
+  poster:
+  title: 'Visual editing for Payload: demo'
+
 features:
-  - icon: 🖱️
-    title: '[Placeholder] Click to edit'
-    details: Hover any content in the preview, click "Edit", and the admin opens the document with the field focused, inside tabs, groups, arrays and blocks.
-  - icon: 🪄
-    title: '[Placeholder] Works in the Live Preview'
-    details: Inside Payload's Live Preview the click focuses the field next to the page, in the same tab.
-  - icon: 🧩
-    title: '[Placeholder] Text, images, numbers'
-    details: Text carries an invisible source map. Images, numbers, selects and dates carry data attributes.
-  - icon: 🔒
-    title: '[Placeholder] Draft Mode only'
-    details: Encoding is opt-in per request. Published pages stay clean.
-  - icon: ☁️
-    title: '[Placeholder] Runs on Cloudflare Workers'
-    details: No Node-only APIs in package code.
-  - icon: 🤖
-    title: '[Placeholder] Agent-ready'
-    details: Ships agent skills, so your coding agent knows how to set it up and what to watch out for.
+  - icon: { src: /icons/pointer.svg }
+    title: Click to edit
+    details: Hover any content in the preview, click "Edit", and the admin opens the document with the field focused. Tabs open and rows expand on the way.
+  - icon: { src: /icons/split.svg }
+    title: Works in the Live Preview
+    details: Inside Payload's Live Preview the click focuses the field right next to the page, in the same tab, through a versioned postMessage handshake.
+  - icon: { src: /icons/image.svg }
+    title: Text, images, numbers
+    details: Text carries an invisible source map. Images, numbers, selects, dates and relationships carry data attributes via fieldAttrs().
+  - icon: { src: /icons/lock.svg }
+    title: Draft Mode only
+    details: Encoding is opt-in per request and only for logged-in drafts. Published pages stay byte-for-byte clean.
+  - icon: { src: /icons/cloud.svg }
+    title: Runs on Cloudflare Workers
+    details: No Node-only APIs in package code. Deploy wherever your Payload and Next.js app already runs.
+  - icon: { src: /icons/spark.svg }
+    title: Agent-ready
+    details: Ships agent skills, so Claude Code, Cursor or Codex can set it up and keep following the rules afterwards.
 ---
 
-<!--
-  Marketing page placeholder. Planned sections (not built yet):
-  - Demo video / GIF of a click in the preview focusing a field in the admin
-  - Comparison with Payload's Content Link and other plugins
-  - Testimonials / showcase
-  - Call to action: install + AI setup
--->
+<HomeSteps />
+
+<HomeUnderTheHood />
+
+<div class="pve-section">
+<div class="vp-doc pve-md pve-setup">
+<div>
+
+<p class="pve-eyebrow">For developers: get started</p>
+
+## Set up in <span class="grad">minutes</span> {#setup}
+
+<p class="pve-lead">Install two packages, add the plugin, mount the overlay in Draft Mode. The <a href="./guide/getting-started">getting started guide</a> walks through every step, including the preview route and <code>stegaClean</code>.</p>
+
+### Or let your agent do it
+
+```sh
+npx skills add derweili/payload-visual-editing
+```
+
+Then ask: *"Set up Payload visual editing in this project."* More in [AI-assisted setup](./ai/setup).
+
+</div>
+<div>
+
+::: code-group
+
+```sh [1. Install]
+pnpm add @derweili/payload-visual-editing \
+         @derweili/payload-visual-editing-overlay
+```
+
+```ts [2. payload.config.ts]
+import { buildConfig } from 'payload'
+import { visualEditingPlugin } from '@derweili/payload-visual-editing/server'
+
+export default buildConfig({
+  // …
+  plugins: [
+    visualEditingPlugin({
+      collections: ['pages', 'posts'],
+      globals: ['header'],
+    }),
+  ],
+})
+```
+
+```ts [3. Read drafts]
+const { isEnabled: draft } = await draftMode()
+
+const page = await payload.findByID({
+  collection: 'pages',
+  id,
+  draft,
+  context: draft ? { encodeSourceMaps: true } : {},
+})
+```
+
+```tsx [4. layout.tsx]
+import { draftMode } from 'next/headers'
+import { VisualEditing } from '@derweili/payload-visual-editing-overlay/react'
+
+export default async function Layout({ children }) {
+  const { isEnabled: draft } = await draftMode()
+  return (
+    <html lang="en">
+      <body>
+        {children}
+        {draft && <VisualEditing label="Edit" />}
+      </body>
+    </html>
+  )
+}
+```
+
+:::
+
+</div>
+</div>
+</div>
+
+<HomeScope />
+
+<HomeCta />

@@ -1,6 +1,6 @@
-# What is Payload Visual Editing?
+# What is Visual editing for Payload?
 
-Payload Visual Editing lets editors click content in a Next.js preview and land on the exact field
+Visual editing for Payload lets editors click content in a Next.js preview and land on the exact field
 in the Payload admin, including fields inside tabs, groups, arrays and blocks. It works both in a
 preview in its own tab and inside Payload's Live Preview.
 

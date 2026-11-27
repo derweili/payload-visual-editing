@@ -3,16 +3,21 @@ import { defineConfig } from 'vitepress'
 const repo = 'https://github.com/derweili/payload-visual-editing'
 
 export default defineConfig({
-  title: 'Payload Visual Editing',
+  title: 'Visual editing for Payload',
   description:
     'Click content in your Next.js preview and land on the exact field in the Payload admin, including in the Live Preview.',
   lang: 'en-US',
   cleanUrls: true,
   lastUpdated: true,
 
-  head: [['meta', { name: 'theme-color', content: '#3b82f6' }]],
+  head: [
+    ['meta', { name: 'theme-color', content: '#3b82f6' }],
+    ['link', { rel: 'icon', type: 'image/svg+xml', href: '/logo.svg' }],
+  ],
 
   themeConfig: {
+    logo: '/logo.svg',
+
     nav: [
       { text: 'Guide', link: '/guide/getting-started', activeMatch: '/guide/' },
       { text: 'AI agents', link: '/ai/setup', activeMatch: '/ai/' },
@@ -24,7 +29,7 @@ export default defineConfig({
       {
         text: 'Introduction',
         items: [
-          { text: 'What is Payload Visual Editing?', link: '/guide/what-is-it' },
+          { text: 'What is Visual editing for Payload?', link: '/guide/what-is-it' },
           { text: 'Getting started', link: '/guide/getting-started' },
         ],
       },
