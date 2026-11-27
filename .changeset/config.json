@@ -13,6 +13,6 @@
   "access": "public",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
-  "ignore": ["@derweili/payload-visual-editing-dev"],
+  "ignore": ["@derweili/payload-visual-editing-dev", "@derweili/payload-visual-editing-demo"],
   "privatePackages": { "version": true, "tag": false }
 }

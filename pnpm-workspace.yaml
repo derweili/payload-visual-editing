@@ -2,6 +2,8 @@ packages:
   - packages/*
   # Documentation site (VitePress). Not published.
   - docs
+  # Demo site (Next + Payload on Neon/Vercel). Not published.
+  - apps/*
 
 allowBuilds:
   esbuild: true

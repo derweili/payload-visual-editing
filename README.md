@@ -10,6 +10,7 @@ carry `data-` attributes.
 | [`@derweili/payload-visual-editing-overlay`](./packages/visual-editing-overlay) | Frontend: the hover outline and edit button (`/vanilla`, `/react`), `stegaClean`, `fieldAttrs` |
 | [`@derweili/payload-visual-editing-core`](./packages/visual-editing-core) | Shared protocol, stega, path and source helpers; used by the two above |
 | [`@derweili/payload-visual-editing-dev`](./packages/visual-editing-dev) | Private test app (Next + Payload) for development and the e2e tests |
+| [`apps/demo`](./apps/demo) | Demo corporate site (Next 16, Payload, Tailwind, shadcn/ui) on Neon and Vercel |
 
 How it fits together:
 
@@ -48,6 +49,7 @@ pnpm install
 pnpm typecheck
 pnpm test         # unit + integration (in-memory D1)
 pnpm dev          # test app on http://localhost:3100 (login: packages/visual-editing-dev/src/seed.ts)
+pnpm dev:demo     # demo site on http://localhost:3000 (needs Postgres, see apps/demo/README.md)
 pnpm test:e2e     # Playwright against the test app
 pnpm pack:check   # build, pack, install into an empty project, import and type-check
 pnpm docs:dev     # documentation site (VitePress) on http://localhost:5173
