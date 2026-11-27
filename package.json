@@ -11,6 +11,9 @@
     "test:e2e": "pnpm --filter @derweili/payload-visual-editing-dev test:e2e",
     "pack:check": "pnpm --filter @derweili/payload-visual-editing-dev pack:check",
     "dev": "pnpm --filter @derweili/payload-visual-editing-dev dev",
+    "docs:dev": "pnpm --filter @derweili/payload-visual-editing-docs dev",
+    "docs:build": "pnpm --filter @derweili/payload-visual-editing-docs build",
+    "docs:preview": "pnpm --filter @derweili/payload-visual-editing-docs preview",
     "changeset": "changeset"
   },
   "devDependencies": {

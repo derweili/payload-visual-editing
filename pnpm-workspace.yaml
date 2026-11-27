@@ -1,5 +1,7 @@
 packages:
   - packages/*
+  # Documentation site (VitePress). Not published.
+  - docs
 
 allowBuilds:
   esbuild: true

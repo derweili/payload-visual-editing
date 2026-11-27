@@ -21,9 +21,22 @@ How it fits together:
    Preview, it sends a `postMessage` to the admin. Either way, the admin component opens the tab,
    expands the row, scrolls to the field and focuses it.
 
-Start with the [plugin README](./packages/payload-visual-editing), then the
+Start with the [getting started guide](./docs/guide/getting-started.md), or the
+[plugin README](./packages/payload-visual-editing) and the
 [overlay README](./packages/visual-editing-overlay). The design is in
 [docs/architecture.md](./docs/architecture.md), the decisions in [docs/adr](./docs/adr).
+
+### Set up with an AI agent
+
+The repository ships [agent skills](./skills) for Claude Code, Cursor, Codex and others: one for
+the setup, one with the rules for working in a project that uses these packages.
+
+```sh
+npx skills add derweili/payload-visual-editing
+```
+
+Then ask your agent to "set up Payload visual editing". More in
+[docs/ai/setup.md](./docs/ai/setup.md).
 
 Requirements: Payload 3.94+, Next.js 15.4+ / 16, React 19. Runs on Cloudflare Workers (no
 Node-only APIs in package code).
@@ -37,6 +50,8 @@ pnpm test         # unit + integration (in-memory D1)
 pnpm dev          # test app on http://localhost:3100 (login: packages/visual-editing-dev/src/seed.ts)
 pnpm test:e2e     # Playwright against the test app
 pnpm pack:check   # build, pack, install into an empty project, import and type-check
+pnpm docs:dev     # documentation site (VitePress) on http://localhost:5173
+pnpm docs:build   # build the documentation; fails on dead links
 ```
 
 - **Source in the workspace, `dist/` when published.** In this repo the `exports` point at `src/`,
@@ -49,6 +64,10 @@ pnpm pack:check   # build, pack, install into an empty project, import and type-
   `transpilePackages` and `allowImportingTsExtensions` in its tsconfig.
 - **CI** (`.github/workflows/ci.yml`): typecheck, tests, the pack check and the e2e tests on every
   pull request.
+- **Docs:** a VitePress site in [`docs/`](./docs) (guides, reference, architecture, ADRs). The
+  homepage (`docs/index.md`) is a placeholder for a later marketing page.
+- **Agent skills:** [`skills/`](./skills), installable with `npx skills add`. Keep them in step
+  with the API when it changes.
 - **Decisions:** [docs/adr](./docs/adr).
 
 ## Releasing
