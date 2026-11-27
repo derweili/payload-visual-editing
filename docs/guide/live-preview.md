@@ -17,7 +17,7 @@ visual editing works there without extra setup.
 
 Point the collection's `admin.livePreview.url` at your Draft Mode route:
 
-```ts
+```ts {4,10}
 const previewURL = ({ data, locale, req }) => {
   const origin = req.url ? new URL(req.url).origin : ''
   const path = `/${data.slug ?? ''}?locale=${locale.code}`

@@ -7,7 +7,7 @@ frontend renders it as `data-` attributes with `fieldAttrs()`.
 
 ## 1. Fetch with encoding on (Draft Mode only)
 
-```ts
+```ts {6}
 const doc = await payload.findByID({
   collection: 'pages',
   id,
@@ -21,11 +21,18 @@ const doc = await payload.findByID({
 
 In a **server component** that receives the Payload document:
 
-```tsx
+```tsx {6,9}
 import { fieldAttrs, fieldSourceOf, sourceOf } from '@derweili/payload-visual-editing-overlay/vanilla'
 
-<img {...fieldAttrs(sourceOf(doc.image))} src={doc.image.url} alt={doc.image.alt} />
-<span {...fieldAttrs(fieldSourceOf(doc, 'year'))}>{doc.year}</span>
+<img
+  src={doc.image.url}
+  alt={doc.image.alt}
+  {...fieldAttrs(sourceOf(doc.image))}
+/>
+
+<span {...fieldAttrs(fieldSourceOf(doc, 'year'))}>
+  {doc.year}
+</span>
 ```
 
 - `sourceOf(value)`: populated uploads and relationships. They are objects, so the tag sits on the
@@ -51,9 +58,13 @@ Read them on the server, in your mapping code, and pass the plain `SourceLocatio
 const toImage = (media: Media) => ({ url: media.url, alt: media.alt, source: sourceOf(media) })
 ```
 
-```tsx
+```tsx {5}
 // any component, client or server
-<img {...fieldAttrs(image.source)} src={image.url} alt={image.alt} />
+<img
+  src={image.url}
+  alt={image.alt}
+  {...fieldAttrs(image.source)}
+/>
 ```
 
 Doing it once in a shared mapper and image component covers every image of a site.

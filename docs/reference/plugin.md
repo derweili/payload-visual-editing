@@ -9,7 +9,7 @@ The Payload 3 plugin.
 
 ## Setup
 
-```ts [payload.config.ts]
+```ts {6-9} [payload.config.ts]
 import { visualEditingPlugin } from '@derweili/payload-visual-editing/server'
 
 export default buildConfig({
@@ -55,7 +55,7 @@ Patterns match the data path without array indices (`team.links.label`).
 - Setting `exclude` replaces the defaults, so add `...DEFAULT_EXCLUDE` if you still want them.
 - Fields named `id` are never encoded.
 
-```ts
+```ts {6}
 import { DEFAULT_EXCLUDE, visualEditingPlugin } from '@derweili/payload-visual-editing/server'
 
 visualEditingPlugin({
@@ -74,7 +74,7 @@ tag, so they stay clickable through `fieldAttrs`.
 
 Encoding is off unless a request asks for it, and only draft/preview reads should ask.
 
-```ts
+```ts {6}
 // Local API (server code: always allowed)
 const page = await payload.findByID({
   collection: 'pages',

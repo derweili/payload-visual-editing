@@ -31,7 +31,7 @@ default. Excluded fields still get a source tag, so they stay clickable through 
 - **Parsing and measuring:** `JSON.parse`, `Number()`, `new Date()`, `length`, truncation.
 - **`split` and `trim`:** see below.
 
-```tsx
+```tsx {7}
 // `theme` is a text field (select fields are never encoded, only tagged)
 
 // ❌ never matches in Draft Mode
@@ -41,7 +41,7 @@ if (block.theme === 'dark') { … }
 if (stegaClean(block.theme) === 'dark') { … }
 ```
 
-```ts
+```ts {5-6}
 // ✅ metadata
 export async function generateMetadata() {
   const page = await getPage()

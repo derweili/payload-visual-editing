@@ -12,7 +12,7 @@ search results, shares and copied text.
    incremental cache on Cloudflare.
 3. **Mount the overlay only in Draft Mode.** `{draft && <VisualEditing />}`.
 
-```ts
+```ts {9,12}
 import { draftMode } from 'next/headers'
 import { unstable_cache } from 'next/cache'
 
