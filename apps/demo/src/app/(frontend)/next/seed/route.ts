@@ -4,8 +4,9 @@ import type { NextRequest } from 'next/server'
 import { getPayloadClient } from '@/lib/payload/client'
 import { seed } from '@/seed/seed'
 
-// Generating and uploading the demo images takes a few seconds
-export const maxDuration = 60
+// Seconds. Generating and uploading the demo images takes a while; 300 is the Hobby plan's limit
+// with Fluid Compute (the default for new projects)
+export const maxDuration = 300
 
 /**
  * Seeds the demo content from the admin dashboard (see components/admin/seed-button.tsx).
@@ -16,6 +17,15 @@ export async function POST(request: NextRequest) {
   const payload = await getPayloadClient()
   const { user } = await payload.auth({ headers: request.headers })
   if (!user) return Response.json({ error: 'Unauthorized' }, { status: 401 })
+
+  // Vercel's file system is read-only: without Blob storage the first upload would fail, after the
+  // seed has already cleared the content. Stop before touching anything.
+  if (process.env.VERCEL && !process.env.BLOB_READ_WRITE_TOKEN) {
+    return Response.json(
+      { error: 'BLOB_READ_WRITE_TOKEN is not set. Connect a Vercel Blob store and redeploy.' },
+      { status: 500 },
+    )
+  }
 
   try {
     await seed(payload)

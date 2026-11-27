@@ -18,8 +18,24 @@ const link = (label: string, reference: Ref, appearance: 'default' | 'outline' =
 })
 const external = (label: string, url: string) => ({ link: { type: 'custom' as const, label, url, newTab: true } })
 
+/** Runs `fn` over `items`, at most `limit` at a time; results keep the order of `items`. */
+async function mapLimit<T, R>(items: T[], limit: number, fn: (item: T, index: number) => Promise<R>): Promise<R[]> {
+  const results: R[] = new Array(items.length)
+  let next = 0
+  const worker = async () => {
+    while (next < items.length) {
+      const i = next++
+      results[i] = await fn(items[i], i)
+    }
+  }
+  await Promise.all(Array.from({ length: Math.min(limit, items.length) }, worker))
+  return results
+}
+
 export async function seed(payload: Payload): Promise<void> {
   const log = (msg: string) => payload.logger.info(`[seed] ${msg}`)
+  const started = Date.now()
+  const elapsed = () => `${((Date.now() - started) / 1000).toFixed(1)}s`
 
   // --- Admin user -------------------------------------------------------------------------------
   const email = process.env.SEED_ADMIN_EMAIL
@@ -38,12 +54,35 @@ export async function seed(payload: Payload): Promise<void> {
   for (const collection of ['pages', 'projects', 'media'] as const) {
     await payload.delete({ collection, where: { id: { exists: true } }, context })
   }
-  log('cleared pages, projects and media')
+  log(`cleared pages, projects and media (${elapsed()})`)
 
   // --- Images -----------------------------------------------------------------------------------
-  let seedNo = 0
-  const image = async (name: string, alt: string, kind: Composition, palette: Palette, size?: [number, number]): Promise<Media> => {
-    const data = await renderArtwork(kind, palette, ++seedNo, ...(size ?? []))
+  // Drawn and uploaded a few at a time: one by one is slow on a serverless function
+  const images = {
+    hero: ['hero-studio', 'Abstract indigo light orbs over a fine grid', 'orbs', 'indigo'],
+    about: ['about-studio', 'Overlapping teal arcs', 'arcs', 'teal'],
+    services: ['services', 'Diagonal bands in slate and blue', 'bands', 'slate'],
+    checkout: ['freshway-checkout', 'Emerald interface blocks', 'blocks', 'emerald'],
+    checkout2: ['freshway-detail', 'Emerald light orbs', 'orbs', 'emerald'],
+    designSystem: ['halcyon-design-system', 'Indigo component grid', 'blocks', 'indigo'],
+    designSystem2: ['halcyon-tokens', 'Indigo diagonal bands', 'bands', 'indigo'],
+    forecast: ['arden-forecast', 'Amber arcs like a rising chart', 'arcs', 'amber'],
+    forecast2: ['arden-detail', 'Amber light orbs', 'orbs', 'amber'],
+    insurer: ['mutual-harbor', 'Slate light orbs', 'orbs', 'slate'],
+    insurer2: ['mutual-harbor-workshop', 'Slate arcs', 'arcs', 'slate'],
+    health: ['cedar-health', 'Rose diagonal bands', 'bands', 'rose'],
+    health2: ['cedar-health-detail', 'Rose interface blocks', 'blocks', 'rose'],
+    fleet: ['voltline-fleet', 'Teal interface blocks', 'blocks', 'teal'],
+    fleet2: ['voltline-map', 'Teal light orbs', 'orbs', 'teal'],
+    ava: ['team-ava', 'Portrait illustration of Ava Lindqvist', 'portrait', 'indigo'],
+    marcus: ['team-marcus', 'Portrait illustration of Marcus Webb', 'portrait', 'teal'],
+    priya: ['team-priya', 'Portrait illustration of Priya Raman', 'portrait', 'amber'],
+    jonas: ['team-jonas', 'Portrait illustration of Jonas Keller', 'portrait', 'rose'],
+  } satisfies Record<string, [name: string, alt: string, kind: Composition, palette: Palette]>
+
+  const createImage = async ([name, alt, kind, palette]: [string, string, Composition, Palette], seedNo: number): Promise<Media> => {
+    const size: [number, number] = kind === 'portrait' ? [600, 750] : [1200, 900]
+    const data = await renderArtwork(kind, palette, seedNo, ...size)
     return payload.create({
       collection: 'media',
       data: { alt },
@@ -51,30 +90,11 @@ export async function seed(payload: Payload): Promise<void> {
       context,
     })
   }
-  const portrait = (name: string, alt: string, palette: Palette) => image(name, alt, 'portrait', palette, [800, 1000])
 
-  const img = {
-    hero: await image('hero-studio', 'Abstract indigo light orbs over a fine grid', 'orbs', 'indigo'),
-    about: await image('about-studio', 'Overlapping teal arcs', 'arcs', 'teal'),
-    services: await image('services', 'Diagonal bands in slate and blue', 'bands', 'slate'),
-    checkout: await image('freshway-checkout', 'Emerald interface blocks', 'blocks', 'emerald'),
-    checkout2: await image('freshway-detail', 'Emerald light orbs', 'orbs', 'emerald'),
-    designSystem: await image('halcyon-design-system', 'Indigo component grid', 'blocks', 'indigo'),
-    designSystem2: await image('halcyon-tokens', 'Indigo diagonal bands', 'bands', 'indigo'),
-    forecast: await image('arden-forecast', 'Amber arcs like a rising chart', 'arcs', 'amber'),
-    forecast2: await image('arden-detail', 'Amber light orbs', 'orbs', 'amber'),
-    insurer: await image('mutual-harbor', 'Slate light orbs', 'orbs', 'slate'),
-    insurer2: await image('mutual-harbor-workshop', 'Slate arcs', 'arcs', 'slate'),
-    health: await image('cedar-health', 'Rose diagonal bands', 'bands', 'rose'),
-    health2: await image('cedar-health-detail', 'Rose interface blocks', 'blocks', 'rose'),
-    fleet: await image('voltline-fleet', 'Teal interface blocks', 'blocks', 'teal'),
-    fleet2: await image('voltline-map', 'Teal light orbs', 'orbs', 'teal'),
-    ava: await portrait('team-ava', 'Portrait illustration of Ava Lindqvist', 'indigo'),
-    marcus: await portrait('team-marcus', 'Portrait illustration of Marcus Webb', 'teal'),
-    priya: await portrait('team-priya', 'Portrait illustration of Priya Raman', 'amber'),
-    jonas: await portrait('team-jonas', 'Portrait illustration of Jonas Keller', 'rose'),
-  }
-  log(`created ${Object.keys(img).length} images`)
+  const entries = Object.entries(images) as [keyof typeof images, (typeof images)[keyof typeof images]][]
+  const created = await mapLimit(entries, 4, ([, spec], i) => createImage(spec, i + 1))
+  const img = Object.fromEntries(entries.map(([key], i) => [key, created[i]])) as Record<keyof typeof images, Media>
+  log(`created ${created.length} images (${elapsed()})`)
 
   // --- Projects ---------------------------------------------------------------------------------
   type ProjectData = RequiredDataFromCollectionSlug<'projects'>
@@ -234,7 +254,7 @@ export async function seed(payload: Payload): Promise<void> {
     const relatedProjects = [projects[(i + 1) % projects.length].id, projects[(i + 2) % projects.length].id]
     await payload.update({ collection: 'projects', id: project.id, data: { relatedProjects }, context })
   }
-  log(`created ${projects.length} projects`)
+  log(`created ${projects.length} projects (${elapsed()})`)
 
   // --- Pages ------------------------------------------------------------------------------------
   // Created as empty drafts first, so pages can link to each other; filled in and published below.
@@ -451,7 +471,7 @@ export async function seed(payload: Payload): Promise<void> {
   for (const slug of slugs) {
     await payload.update({ collection: 'pages', id: pages[slug].id, data: { ...content[slug], _status: 'published' }, context })
   }
-  log(`created ${slugs.length} pages`)
+  log(`created ${slugs.length} pages (${elapsed()})`)
 
   // --- Header & footer --------------------------------------------------------------------------
   await payload.updateGlobal({
@@ -476,5 +496,5 @@ export async function seed(payload: Payload): Promise<void> {
     },
     context,
   })
-  log('updated header and footer')
+  log(`updated header and footer (${elapsed()})`)
 }

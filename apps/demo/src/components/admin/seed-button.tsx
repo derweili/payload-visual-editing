@@ -8,11 +8,13 @@ type State = 'idle' | 'confirm' | 'seeding' | 'done' | 'error'
 /** Admin dashboard: fill an empty deployment with the demo content (or reset it). */
 export function SeedButton() {
   const [state, setState] = useState<State>('idle')
+  const [error, setError] = useState<string | null>(null)
 
   async function run() {
     if (state !== 'confirm') return setState('confirm')
     setState('seeding')
     const res = await fetch('/next/seed', { method: 'POST', credentials: 'include' })
+    if (!res.ok) setError(((await res.json().catch(() => null)) as { error?: string } | null)?.error ?? null)
     setState(res.ok ? 'done' : 'error')
   }
 
@@ -35,7 +37,7 @@ export function SeedButton() {
               : 'Seed demo content'}
         </Button>
       )}
-      {state === 'error' && <p>Seeding failed. Check the server logs.</p>}
+      {state === 'error' && <p>Seeding failed: {error ?? 'check the server logs.'}</p>}
     </Banner>
   )
 }
