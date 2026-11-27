@@ -171,3 +171,140 @@
     animation: none;
   }
 }
+
+/* ── Micro animations ─────────────────────────────────────────────────────── */
+.pve-landing {
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Hero: staggered intro on load (pure CSS, runs before and without JavaScript). */
+.pve-intro {
+  animation: pve-intro 900ms var(--ease-out-expo) both;
+  animation-delay: calc(var(--i, 0) * 90ms + 60ms);
+}
+@keyframes pve-intro {
+  from {
+    opacity: 0;
+    translate: 0 18px;
+    filter: blur(6px);
+  }
+}
+
+/* Scroll reveal (v-reveal, see landing/reveal.ts). */
+.reveal {
+  opacity: 0;
+  translate: 0 20px;
+  filter: blur(6px);
+  transition:
+    opacity 800ms var(--ease-out-expo),
+    translate 800ms var(--ease-out-expo),
+    filter 800ms var(--ease-out-expo);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+.reveal.is-revealed {
+  opacity: 1;
+  translate: 0 0;
+  filter: none;
+}
+
+/* The "Edit" motif draws itself in: the outline closes in, then the tag pops. */
+.pve-editable {
+  animation: pve-edit-outline 700ms var(--ease-out-expo) both;
+  animation-delay: var(--edit-delay, 650ms);
+}
+.pve-edit-tag {
+  transform-origin: bottom left;
+  animation: pve-edit-tag 500ms var(--ease-spring) both;
+  animation-delay: calc(var(--edit-delay, 650ms) + 380ms);
+}
+.reveal:not(.is-revealed) .pve-editable,
+.reveal:not(.is-revealed) .pve-edit-tag {
+  animation-play-state: paused;
+}
+@keyframes pve-edit-outline {
+  from {
+    outline-color: transparent;
+    outline-offset: 14px;
+  }
+}
+@keyframes pve-edit-tag {
+  from {
+    opacity: 0;
+    scale: 0.4;
+    translate: -4px 6px;
+  }
+}
+
+/* Hover: cards answer like editable content in the preview. */
+.pve-hover-edit {
+  position: relative;
+}
+.pve-hover-edit::after {
+  content: '';
+  position: absolute;
+  inset: 8px;
+  border: 1.5px dashed var(--primary);
+  border-radius: calc(var(--radius) + 2px);
+  opacity: 0;
+  scale: 1.015;
+  transition:
+    opacity 220ms ease-out,
+    scale 320ms var(--ease-out-expo);
+  pointer-events: none;
+}
+.pve-hover-tag {
+  position: absolute;
+  top: 0;
+  right: 18px;
+  z-index: 1;
+  border-radius: 2px;
+  background: var(--primary);
+  color: var(--primary-foreground);
+  padding: 3px 6px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  line-height: 1;
+  opacity: 0;
+  scale: 0.6;
+  transform-origin: bottom left;
+  transition:
+    opacity 180ms ease-out,
+    scale 380ms var(--ease-spring);
+  pointer-events: none;
+}
+.pve-hover-edit:hover::after {
+  opacity: 1;
+  scale: 1;
+}
+.pve-hover-edit:hover .pve-hover-tag {
+  opacity: 1;
+  scale: 1;
+}
+
+/* Code tabs: lines slide in one after another when the tab changes. */
+.code-swap .code-line {
+  animation: pve-code-line 420ms var(--ease-out-expo) both;
+  animation-delay: calc(var(--l, 0) * 24ms);
+}
+@keyframes pve-code-line {
+  from {
+    opacity: 0;
+    translate: -8px 0;
+    filter: blur(3px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pve-intro,
+  .pve-editable,
+  .pve-edit-tag,
+  .code-swap .code-line {
+    animation: none;
+  }
+  .pve-hover-edit::after,
+  .pve-hover-tag {
+    transition: none;
+  }
+}

@@ -13,15 +13,17 @@ import {
   Type,
 } from 'lucide-vue-next'
 import Btn from './Btn.vue'
-import CodeTabs from './CodeTabs.vue'
-import CopyButton from './CopyButton.vue'
+import { data as code } from './code.data'
+import CodeLines from './CodeLines.vue'
 import Editable from './Editable.vue'
 import Eyebrow from './Eyebrow.vue'
 import InlineCode from './InlineCode.vue'
 import LivePreviewMock from './LivePreviewMock.vue'
 import Logo from './Logo.vue'
+import SetupSection from './SetupSection.vue'
 import ThemeToggle from './ThemeToggle.vue'
 import { docs, GITHUB } from './parts'
+import { vReveal } from './reveal'
 
 const nav = [
   ['Guide', docs('/guide/getting-started')],
@@ -89,29 +91,12 @@ const editorSteps = [
   },
 ]
 
+// Code for these cards lives in snippets.ts (highlighted at build time).
 const hoodSteps = [
-  {
-    tag: 'Encode',
-    title: 'Payload adds a source map to draft reads',
-    code: `payload.findByID({
-  collection: 'pages', id, draft,
-  context: { encodeSourceMaps: draft },
-})`,
-  },
-  {
-    tag: 'Detect',
-    title: 'The overlay finds the refs on the page',
-    code: `{draft && <VisualEditing />}`,
-  },
-  {
-    tag: 'Focus',
-    title: 'The admin focuses the field',
-    code: `/admin/collections/pages/1
-  ?field=team.1.name`,
-  },
+  { tag: 'Encode', title: 'Payload adds a source map to draft reads' },
+  { tag: 'Detect', title: 'The overlay finds the refs on the page' },
+  { tag: 'Focus', title: 'The admin focuses the field' },
 ]
-
-const agentCmd = 'npx skills add derweili/payload-visual-editing'
 
 const notYet = [
   'Inline editing on the page',
@@ -135,7 +120,7 @@ const notYet = [
             v-for="[label, href] in nav"
             :key="label"
             :href="href"
-            class="hidden rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors hover:text-foreground md:block"
+            class="hidden rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors hover:text-primary md:block"
           >
             {{ label }}
           </a>
@@ -157,32 +142,38 @@ const notYet = [
         <div class="bg-grid absolute inset-0 [mask-image:radial-gradient(ellipse_at_top,black_30%,transparent_75%)]" />
         <div class="relative mx-auto max-w-6xl px-5 pt-16 pb-20 sm:pt-24">
           <div
-            class="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1 font-mono text-xs text-muted-foreground"
+            class="pve-intro inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1 font-mono text-xs text-muted-foreground"
           >
             <span class="size-1.5 rounded-full bg-primary" />
             For Payload 3 + Next.js
           </div>
-          <h1 class="text-balance mt-8 max-w-4xl text-[2.6rem] leading-[1.05] font-semibold tracking-tight sm:text-6xl lg:text-7xl">
+          <h1 class="pve-intro [--i:1] text-balance mt-8 max-w-4xl text-[2.6rem] leading-[1.05] font-semibold tracking-tight sm:text-6xl lg:text-7xl">
             Stop hunting for fields.
             <span class="block text-muted-foreground">Click the <Editable>page</Editable> instead.</span>
           </h1>
-          <p class="mt-8 max-w-xl text-lg leading-relaxed text-muted-foreground">
+          <p class="pve-intro [--i:2] mt-8 max-w-xl text-lg leading-relaxed text-muted-foreground">
             Which tab was it? Which block, which row? Your editors stop guessing. They click any text, image or number on
             the page, and Payload opens the exact field.
           </p>
-          <div class="mt-10 flex flex-wrap gap-3">
+          <div class="pve-intro [--i:3] mt-10 flex flex-wrap gap-3">
             <Btn :href="docs('/guide/getting-started')">Get started <ArrowRight class="size-4" /></Btn>
             <Btn :href="docs('/ai/setup')" variant="ghost"><Bot class="size-4" /> Set up with AI</Btn>
             <Btn :href="GITHUB" variant="ghost"><Github class="size-4" /> GitHub</Btn>
           </div>
-          <LivePreviewMock />
+          <LivePreviewMock class="pve-intro [--i:4]" />
         </div>
       </section>
 
       <!-- Features -->
       <section class="border-b border-border">
         <div class="mx-auto grid max-w-6xl sm:grid-cols-2 lg:grid-cols-3">
-          <div v-for="(f, i) in features" :key="f.title" :class="['border-border p-8', featureBorders(i)]">
+          <div
+            v-for="(f, i) in features"
+            :key="f.title"
+            v-reveal="(i % 3) * 90"
+            :class="['pve-hover-edit border-border p-8', featureBorders(i)]"
+          >
+            <span aria-hidden="true" class="pve-hover-tag">✎ Edit</span>
             <component :is="f.icon" class="size-5 text-primary" />
             <h3 class="mt-5 font-semibold">{{ f.title }}</h3>
             <p class="mt-2 text-sm leading-relaxed text-muted-foreground">{{ f.body }}</p>
@@ -194,16 +185,22 @@ const notYet = [
       <section class="border-b border-border">
         <div class="mx-auto max-w-6xl px-5 py-24">
           <div class="grid gap-6 lg:grid-cols-2 lg:items-end">
-            <div>
+            <div v-reveal>
               <Eyebrow>For editors</Eyebrow>
               <h2 class="text-balance mt-4 text-4xl font-semibold tracking-tight sm:text-5xl">See it. Click it. Fix it.</h2>
             </div>
-            <p class="max-w-md text-muted-foreground lg:justify-self-end">
+            <p v-reveal="100" class="max-w-md text-muted-foreground lg:justify-self-end">
               No more memorising which tab, block or array row holds a sentence. Start from the page your readers see.
             </p>
           </div>
           <ol class="mt-14 grid gap-4 md:grid-cols-3">
-            <li v-for="(s, i) in editorSteps" :key="s.title" class="rounded-xl border border-border bg-card p-6">
+            <li
+              v-for="(s, i) in editorSteps"
+              :key="s.title"
+              v-reveal="i * 110"
+              class="pve-hover-edit rounded-xl border border-border bg-card p-6"
+            >
+              <span aria-hidden="true" class="pve-hover-tag">✎ Edit</span>
               <div class="h-28 rounded-lg border border-border bg-muted/40 p-4">
                 <div v-if="i === 0" class="space-y-2">
                   <div class="flex justify-end">
@@ -236,6 +233,7 @@ const notYet = [
       <!-- Under the hood -->
       <section class="border-b border-border bg-muted/40">
         <div class="mx-auto max-w-6xl px-5 py-24">
+          <div v-reveal>
           <Eyebrow>For developers · Under the hood</Eyebrow>
           <h2 class="text-balance mt-4 max-w-2xl text-4xl font-semibold tracking-tight sm:text-5xl">
             Every draft value knows where it came from.
@@ -244,13 +242,14 @@ const notYet = [
             No IDs to wire up by hand. The source travels with the content — from the Payload read to the rendered page
             and back to the admin.
           </p>
+          </div>
           <div class="mt-14 grid gap-4 md:grid-cols-3">
-            <div v-for="(s, i) in hoodSteps" :key="s.tag" class="flex min-w-0 flex-col rounded-xl border border-border bg-card p-6">
+            <div v-for="(s, i) in hoodSteps" :key="s.tag" v-reveal="i * 110" class="flex min-w-0 flex-col rounded-xl border border-border bg-card p-6">
               <div class="font-mono text-xs text-primary">{{ i + 1 }} · {{ s.tag }}</div>
               <!-- Code first, at the same height in every card, so the titles below line up. -->
               <pre
                 class="mt-4 flex h-28 items-center overflow-x-auto rounded-lg bg-code p-4 font-mono text-xs leading-relaxed text-code-foreground"
-              ><code class="block whitespace-pre">{{ s.code }}</code></pre>
+              ><code class="block whitespace-pre"><CodeLines :lines="code.hood[i] ?? []" /></code></pre>
               <h3 class="mt-6 font-semibold">{{ s.title }}</h3>
               <p class="mt-3 text-sm leading-relaxed text-muted-foreground">
                 <template v-if="i === 0">
@@ -279,57 +278,21 @@ const notYet = [
       </section>
 
       <!-- Setup -->
-      <section id="setup" class="border-b border-border">
-        <div class="mx-auto grid max-w-6xl gap-12 px-5 py-24 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
-          <div class="min-w-0">
-            <Eyebrow>For developers · Get started</Eyebrow>
-            <h2 class="text-balance mt-4 text-4xl font-semibold tracking-tight sm:text-5xl">Set up in minutes.</h2>
-            <p class="mt-6 text-muted-foreground">
-              Install two packages, add the plugin, mount the overlay in Draft Mode. The
-              <a :href="docs('/guide/getting-started')" class="text-primary hover:underline">getting started guide</a>
-              walks through every step, including the preview route and <InlineCode>stegaClean</InlineCode>.
-            </p>
-            <p class="mt-4 rounded-lg border border-dashed border-border p-4 text-sm text-muted-foreground">
-              Builds on Payload's own preview: for clicks inside the Live Preview, set up
-              <a
-                href="https://payloadcms.com/docs/live-preview/overview"
-                target="_blank"
-                rel="noreferrer"
-                class="text-primary hover:underline"
-                >Payload's Live Preview</a
-              >
-              first.
-              <a :href="docs('/guide/live-preview')" class="text-primary hover:underline">More</a>
-            </p>
-            <h3 class="mt-10 font-semibold">Or let your agent do it</h3>
-            <div class="mt-3 flex items-center justify-between gap-2 rounded-lg bg-code py-1.5 pr-1.5 pl-4">
-              <code class="min-w-0 overflow-x-auto font-mono text-[13px] whitespace-nowrap text-code-foreground">
-                <span class="text-primary">$</span> {{ agentCmd }}
-              </code>
-              <CopyButton :text="agentCmd" />
-            </div>
-            <p class="mt-3 text-sm text-muted-foreground">
-              Then ask: <em>"Set up Payload visual editing in this project."</em> More in
-              <a :href="docs('/ai/setup')" class="text-primary hover:underline">AI-assisted setup</a>.
-            </p>
-          </div>
-          <div class="min-w-0">
-            <CodeTabs />
-          </div>
-        </div>
-      </section>
+      <SetupSection />
 
       <!-- Scope -->
       <section class="border-b border-border">
         <div class="mx-auto max-w-6xl px-5 py-24">
+          <div v-reveal>
           <Eyebrow>Scope</Eyebrow>
           <h2 class="text-balance mt-4 text-4xl font-semibold tracking-tight sm:text-5xl">Built for real content models.</h2>
           <p class="mt-6 max-w-2xl text-muted-foreground">
             Deep paths through tabs, groups, arrays and blocks, in collections and globals, localized or not. Plus an
             honest list of what it doesn't do yet.
           </p>
+          </div>
           <div class="mt-14 grid gap-4 md:grid-cols-2">
-            <div class="rounded-xl border border-border bg-card p-6 sm:p-8">
+            <div v-reveal class="rounded-xl border border-border bg-card p-6 sm:p-8">
               <h3 class="font-semibold">Supported</h3>
               <ul class="mt-6 space-y-4">
                 <li class="flex gap-3 text-sm">
@@ -355,7 +318,7 @@ const notYet = [
                 </li>
               </ul>
             </div>
-            <div class="rounded-xl border border-dashed border-border p-6 sm:p-8">
+            <div v-reveal="110" class="rounded-xl border border-dashed border-border p-6 sm:p-8">
               <h3 class="font-semibold text-muted-foreground">Not (yet)</h3>
               <ul class="mt-6 space-y-4">
                 <li v-for="item in notYet" :key="item" class="flex gap-3 text-sm text-muted-foreground">
@@ -376,7 +339,7 @@ const notYet = [
 
       <!-- CTA + footer -->
       <section>
-        <div class="mx-auto max-w-6xl px-5 py-24 text-center">
+        <div v-reveal class="mx-auto max-w-6xl px-5 py-24 text-center">
           <h2 class="text-balance mx-auto max-w-3xl text-4xl font-semibold tracking-tight sm:text-6xl">
             Give your editors the <Editable label="Shortcut">shortcut</Editable>.
           </h2>

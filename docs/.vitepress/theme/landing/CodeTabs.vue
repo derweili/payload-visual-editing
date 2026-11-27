@@ -1,60 +1,14 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
+import { data } from './code.data'
+import CodeLines from './CodeLines.vue'
 import CopyButton from './CopyButton.vue'
+import { setupTabs } from './snippets'
 
-const tabs = [
-  {
-    label: 'Install',
-    code: `pnpm add @derweili/payload-visual-editing \\
-  @derweili/payload-visual-editing-overlay`,
-  },
-  {
-    label: 'payload.config.ts',
-    code: `import { buildConfig } from 'payload'
-import { visualEditingPlugin } from '@derweili/payload-visual-editing/server'
-
-export default buildConfig({
-  // …
-  plugins: [
-    visualEditingPlugin({
-      collections: ['pages', 'posts'],
-      globals: ['header'],
-    }),
-  ],
-})`,
-  },
-  {
-    label: 'Read drafts',
-    code: `const { isEnabled: draft } = await draftMode()
-
-const page = await payload.findByID({
-  collection: 'pages',
-  id,
-  draft,
-  context: draft ? { encodeSourceMaps: true } : {},
-})`,
-  },
-  {
-    label: 'layout.tsx',
-    code: `import { draftMode } from 'next/headers'
-import { VisualEditing } from '@derweili/payload-visual-editing-overlay/react'
-
-export default async function Layout({ children }) {
-  const { isEnabled: draft } = await draftMode()
-  return (
-    <html lang="en">
-      <body>
-        {children}
-        {draft && <VisualEditing label="Edit" />}
-      </body>
-    </html>
-  )
-}`,
-  },
-]
-
+const tabs = setupTabs
 const active = ref(0)
 const tab = computed(() => tabs[active.value] ?? tabs[0]!)
+const lines = computed(() => data.setup[active.value] ?? data.setup[0]!)
 </script>
 
 <template>
@@ -69,18 +23,20 @@ const tab = computed(() => tabs[active.value] ?? tabs[0]!)
         type="button"
         :aria-selected="i === active"
         :class="[
-          'shrink-0 cursor-pointer border-b-2 px-4 py-3 font-mono text-xs transition-colors',
-          i === active
-            ? 'border-primary text-code-foreground'
-            : 'border-transparent text-code-foreground/50 hover:text-code-foreground/80',
+          'relative shrink-0 cursor-pointer px-4 py-3 font-mono text-xs transition-colors',
+          i === active ? 'text-code-foreground' : 'text-code-foreground/50 hover:text-code-foreground/80',
         ]"
         @click="active = i"
       >
         <span class="mr-1.5 text-primary">{{ i + 1 }}</span>{{ t.label }}
+        <span
+          aria-hidden="true"
+          :class="['absolute bottom-0 left-0 h-0.5 w-full bg-primary transition-transform', i === active ? 'scale-x-100' : 'scale-x-0']"
+        />
       </button>
     </div>
     <div class="flex items-start justify-between gap-2 p-4 sm:p-5">
-      <pre class="min-h-[15rem] min-w-0 overflow-x-auto font-mono text-[13px] leading-relaxed"><code>{{ tab.code }}</code></pre>
+      <pre class="min-h-[19rem] min-w-0 overflow-x-auto font-mono text-[13px] leading-relaxed"><code><CodeLines :key="active" :lines="lines" animate /></code></pre>
       <CopyButton :text="tab.code" />
     </div>
   </div>
