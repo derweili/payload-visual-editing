@@ -1,6 +1,6 @@
 {
   "name": "@derweili/payload-visual-editing",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Visual editing for Payload 3: stega source maps and click-to-focus in the admin",
   "keywords": [
     "payload",
