@@ -1,0 +1,73 @@
+{
+  "name": "@derweili/payload-visual-editing",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Visual editing for Payload 3: stega source maps and click-to-focus in the admin",
+  "license": "MIT",
+  "author": "Julian Weiland",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/derweili/payload-visual-editing.git",
+    "directory": "packages/payload-visual-editing"
+  },
+  "homepage": "https://github.com/derweili/payload-visual-editing/tree/main/packages/payload-visual-editing#readme",
+  "bugs": "https://github.com/derweili/payload-visual-editing/issues",
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    "./server": "./src/server/index.ts",
+    "./client": "./src/client/index.ts"
+  },
+  "publishConfig": {
+    "access": "public",
+    "exports": {
+      "./server": {
+        "types": "./dist/server/index.d.ts",
+        "import": "./dist/server/index.js",
+        "default": "./dist/server/index.js"
+      },
+      "./client": {
+        "types": "./dist/client/index.d.ts",
+        "import": "./dist/client/index.js",
+        "default": "./dist/client/index.js"
+      }
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "swc ./src -d ./dist --config-file .swcrc --strip-leading-paths --delete-dir-on-start && tsc -p tsconfig.build.json",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@derweili/payload-visual-editing-core": "workspace:*"
+  },
+  "peerDependencies": {
+    "@payloadcms/ui": "^3.94.1",
+    "next": "^15.4.0 || ^16.0.0",
+    "payload": "^3.94.1",
+    "react": "^19.0.0"
+  },
+  "devDependencies": {
+    "@payloadcms/db-d1-sqlite": "3.94.1",
+    "@payloadcms/richtext-lexical": "3.94.1",
+    "@payloadcms/ui": "3.94.1",
+    "@swc/cli": "0.7.10",
+    "@swc/core": "1.15.11",
+    "@types/react": "19.2.14",
+    "@types/react-dom": "19.2.3",
+    "miniflare": "5.20261123.1-beta",
+    "next": "16.4.6",
+    "payload": "3.94.1",
+    "react": "19.2.9",
+    "react-dom": "19.2.9",
+    "typescript": "5.7.3",
+    "vite": "7.3.8",
+    "vitest": "4.0.18"
+  }
+}

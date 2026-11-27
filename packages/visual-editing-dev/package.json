@@ -1,0 +1,41 @@
+{
+  "name": "@derweili/payload-visual-editing-dev",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Test app for the visual editing packages: a small Next + Payload site on an in-memory D1, for development and the Playwright e2e tests",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/derweili/payload-visual-editing.git",
+    "directory": "packages/visual-editing-dev"
+  },
+  "type": "module",
+  "scripts": {
+    "dev": "node -e \"require('fs').rmSync('.media', { recursive: true, force: true })\" && cross-env NODE_OPTIONS=--no-deprecation next dev --port 3100",
+    "generate:importmap": "cross-env NODE_OPTIONS=--no-deprecation payload generate:importmap",
+    "test:e2e": "playwright test",
+    "typecheck": "tsc --noEmit",
+    "pack:check": "node scripts/pack-check.mjs"
+  },
+  "dependencies": {
+    "@derweili/payload-visual-editing": "workspace:*",
+    "@derweili/payload-visual-editing-overlay": "workspace:*",
+    "@payloadcms/db-d1-sqlite": "3.94.1",
+    "@payloadcms/next": "3.94.1",
+    "@payloadcms/richtext-lexical": "3.94.1",
+    "@payloadcms/ui": "3.94.1",
+    "cross-env": "^7.0.3",
+    "graphql": "^16.8.1",
+    "miniflare": "5.20261123.1-beta",
+    "next": "16.4.6",
+    "payload": "3.94.1",
+    "react": "19.2.9",
+    "react-dom": "19.2.9"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.63.0",
+    "@types/node": "22.19.9",
+    "@types/react": "19.2.14",
+    "@types/react-dom": "19.2.3",
+    "typescript": "5.7.3"
+  }
+}

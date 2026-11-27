@@ -1,0 +1,23 @@
+{
+  "$schema": "https://swc.rs/schema.json",
+  "sourceMaps": true,
+  "exclude": [
+    "\\.test\\.tsx?$"
+  ],
+  "jsc": {
+    "target": "es2022",
+    "parser": {
+      "syntax": "typescript",
+      "tsx": true
+    },
+    "transform": {
+      "react": {
+        "runtime": "automatic"
+      }
+    },
+    "rewriteRelativeImportExtensions": true
+  },
+  "module": {
+    "type": "es6"
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "name": "@derweili/payload-visual-editing-overlay",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Frontend overlay for Payload visual editing: outlines, edit buttons, links back to the admin",
+  "license": "MIT",
+  "author": "Julian Weiland",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/derweili/payload-visual-editing.git",
+    "directory": "packages/visual-editing-overlay"
+  },
+  "homepage": "https://github.com/derweili/payload-visual-editing/tree/main/packages/visual-editing-overlay#readme",
+  "bugs": "https://github.com/derweili/payload-visual-editing/issues",
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    "./vanilla": "./src/vanilla/index.ts",
+    "./react": "./src/react/index.ts"
+  },
+  "publishConfig": {
+    "access": "public",
+    "exports": {
+      "./vanilla": {
+        "types": "./dist/vanilla/index.d.ts",
+        "import": "./dist/vanilla/index.js",
+        "default": "./dist/vanilla/index.js"
+      },
+      "./react": {
+        "types": "./dist/react/index.d.ts",
+        "import": "./dist/react/index.js",
+        "default": "./dist/react/index.js"
+      }
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "swc ./src -d ./dist --config-file .swcrc --strip-leading-paths --delete-dir-on-start && tsc -p tsconfig.build.json",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@derweili/payload-visual-editing-core": "workspace:*"
+  },
+  "peerDependencies": {
+    "react": "^18.0.0 || ^19.0.0"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@swc/cli": "0.7.10",
+    "@swc/core": "1.15.11",
+    "@types/react": "19.2.14",
+    "@types/react-dom": "19.2.3",
+    "jsdom": "28.0.0",
+    "react": "19.2.9",
+    "react-dom": "19.2.9",
+    "typescript": "5.7.3",
+    "vite": "7.3.8",
+    "vitest": "4.0.18"
+  }
+}

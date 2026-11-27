@@ -1,0 +1,18 @@
+{
+  "$schema": "https://unpkg.com/@changesets/config@3.1.1/schema.json",
+  "changelog": "@changesets/cli/changelog",
+  "commit": false,
+  "fixed": [],
+  "linked": [
+    [
+      "@derweili/payload-visual-editing",
+      "@derweili/payload-visual-editing-core",
+      "@derweili/payload-visual-editing-overlay"
+    ]
+  ],
+  "access": "public",
+  "baseBranch": "main",
+  "updateInternalDependencies": "patch",
+  "ignore": ["@derweili/payload-visual-editing-dev"],
+  "privatePackages": { "version": true, "tag": false }
+}

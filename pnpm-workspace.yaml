@@ -1,0 +1,10 @@
+packages:
+  - packages/*
+
+allowBuilds:
+  esbuild: true
+  sharp: true
+  # workerd: Miniflare's runtime for the in-memory D1 in tests and the test app
+  workerd: true
+  # Ships prebuilt binaries; its install script isn't needed
+  '@swc/core': false
