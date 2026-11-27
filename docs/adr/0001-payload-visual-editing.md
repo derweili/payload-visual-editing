@@ -74,8 +74,8 @@ Adding an optional node key to the ref later is not a breaking protocol change.
 
 ## 7. Package setup
 
-- All packages are `"private": true` until the first deliberate release. That blocks an accidental
-  `pnpm publish`.
+- Only the three library packages are published. The test app, the demo and the docs stay
+  `"private": true`. Publishing runs only in CI (see Versioning).
 - `@vercel/stega` (MPL-2.0) is used as an unmodified npm dependency and never vendored or patched. MPL is
   copyleft per file: as long as we don't modify its files, our packages can stay MIT.
 - No Node-only modules in package source (Cloudflare Workers). A test in each package enforces it.
@@ -203,8 +203,14 @@ left unencoded (excluded, or URL-like under "auto") have none, so they weren't c
     extensions, which breaks `nodenext` consumers).
 - **Pack check:** `pnpm pack`, install into an empty project, import and type-check with
   `nodenext`. It tests the real published shape rather than the workspace.
-- **Versioning:** Changesets, with the three packages `linked` and starting at 0.1.0. The test app
-  is ignored. The packages stay `"private": true` until the first publish.
+- **Versioning:** Changesets, with the three packages `fixed` (one version for all three: they share
+  the stega protocol, so "same version everywhere" is the compatibility rule users need). Started
+  at 0.1.0. The test app and the demo are ignored.
+  - Changed from `linked`: with `linked`, an unchanged package keeps its old version and the
+    version numbers drift apart.
+- **Releases:** `.github/workflows/release.yml` with `changesets/action`. Merged changesets open a
+  "Version Packages" pull request; merging it publishes to npm, pushes the tags and creates the
+  GitHub Releases. npm Trusted Publishing (OIDC) with provenance, no long-lived npm token.
 - **Licence:** MIT.
 - **CI:** typecheck, tests, the pack check and the e2e tests on every pull request.
 - **Own repository, no history:** the packages started in a client site's pnpm workspace and moved

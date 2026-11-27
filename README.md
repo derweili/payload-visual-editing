@@ -84,13 +84,15 @@ pnpm docs:build   # build the documentation; fails on dead links
 ## Releasing
 
 Versioned with [Changesets](https://github.com/changesets/changesets). The three packages share
-one version line (`linked`). The test app is ignored.
+one version (`fixed`). The test app and the demo are ignored. Releases run only in CI
+([`.github/workflows/release.yml`](./.github/workflows/release.yml)):
 
-```sh
-pnpm changeset            # with every change: packages, bump (0.x: minor = breaking), summary
-pnpm changeset version    # bumps versions, writes CHANGELOG.md
-```
+1. With every change to a package, add a changeset in the same pull request:
+   `pnpm changeset` (pick the packages, the bump (0.x: minor = breaking, patch = the rest), a
+   summary). The summary becomes the changelog entry.
+2. On merge to `main`, the release workflow opens or updates the **Version Packages** pull
+   request: versions bumped, `CHANGELOG.md` written.
+3. Merging that pull request publishes to npm (Trusted Publishing, with provenance), pushes the
+   git tags and creates a GitHub Release per package.
 
-The packages are still `"private": true`. To publish: remove `private` from the three
-`package.json` files, run `pnpm build`, then `pnpm changeset publish`.
-pnpm turns `workspace:*` into the real version and applies `publishConfig`.
+Don't publish from a local machine.

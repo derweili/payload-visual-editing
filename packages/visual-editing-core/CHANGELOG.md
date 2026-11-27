@@ -2,4 +2,4 @@
 
 ## 0.1.0
 
-First version (not published yet).
+First release.

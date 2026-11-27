@@ -1,15 +1,15 @@
 {
   "$schema": "https://unpkg.com/@changesets/config@3.1.1/schema.json",
-  "changelog": "@changesets/cli/changelog",
+  "changelog": ["@changesets/changelog-github", { "repo": "derweili/payload-visual-editing" }],
   "commit": false,
-  "fixed": [],
-  "linked": [
+  "fixed": [
     [
       "@derweili/payload-visual-editing",
       "@derweili/payload-visual-editing-core",
       "@derweili/payload-visual-editing-overlay"
     ]
   ],
+  "linked": [],
   "access": "public",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",

@@ -1,8 +1,14 @@
 {
   "name": "@derweili/payload-visual-editing-core",
   "version": "0.1.0",
-  "private": true,
   "description": "Shared protocol, stega and path helpers for Payload visual editing",
+  "keywords": [
+    "payload",
+    "payloadcms",
+    "visual-editing",
+    "stega",
+    "source-maps"
+  ],
   "license": "MIT",
   "author": "Julian Weiland",
   "repository": {

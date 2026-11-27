@@ -1,8 +1,15 @@
 {
   "name": "@derweili/payload-visual-editing-overlay",
   "version": "0.1.0",
-  "private": true,
   "description": "Frontend overlay for Payload visual editing: outlines, edit buttons, links back to the admin",
+  "keywords": [
+    "payload",
+    "payloadcms",
+    "visual-editing",
+    "overlay",
+    "react",
+    "live-preview"
+  ],
   "license": "MIT",
   "author": "Julian Weiland",
   "repository": {
