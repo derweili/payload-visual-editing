@@ -54,3 +54,42 @@
 .vp-doc h3 {
   letter-spacing: -0.02em;
 }
+
+/* Dark/light switch: a circle grows from the click (see appearance.ts). */
+.vt-appearance,
+.vt-appearance *,
+.vt-appearance *::before,
+.vt-appearance *::after {
+  transition: none !important;
+}
+.vt-appearance::view-transition-old(root),
+.vt-appearance::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+/* The dark view is on top: it grows when going dark and shrinks back when going light.
+   Both use an ease-out (fast start, soft landing) instead of playing one curve backwards. */
+.vt-appearance.dark::view-transition-new(root),
+.vt-appearance:not(.dark)::view-transition-old(root) {
+  z-index: 9999;
+  animation: vt-circle-grow 700ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.vt-appearance:not(.dark)::view-transition-old(root) {
+  animation-name: vt-circle-shrink;
+}
+@keyframes vt-circle-grow {
+  from {
+    clip-path: circle(0 at var(--vt-x) var(--vt-y));
+  }
+  to {
+    clip-path: circle(var(--vt-r) at var(--vt-x) var(--vt-y));
+  }
+}
+@keyframes vt-circle-shrink {
+  from {
+    clip-path: circle(var(--vt-r) at var(--vt-x) var(--vt-y));
+  }
+  to {
+    clip-path: circle(0 at var(--vt-x) var(--vt-y));
+  }
+}
