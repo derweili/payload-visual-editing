@@ -1,4 +1,12 @@
-import { ancestorPaths, findFieldElement, focusFieldElement, revealElement, selectTab, tabsInScope } from './dom-adapter.ts'
+import {
+  ancestorPaths,
+  findFieldElement,
+  focusFieldElement,
+  isRendered,
+  revealElement,
+  selectTab,
+  tabsInScope,
+} from './dom-adapter.ts'
 import type { FocusPlan } from './resolve-focus.ts'
 
 /** The parts of Payload's form and document APIs that focusing needs (all public). */
@@ -52,7 +60,12 @@ export async function runFocusPlan(plan: FocusPlan, api: FocusApi, root: Element
       if (!tabs) return false
       scope = selectTab(currentScope, ordinal, step.index) ?? tabs
     }
-    const element = await revealElement(() => findFieldElement(plan.path, root), {
+    // Only a rendered field counts: in a row collapsed this session it exists but is hidden until
+    // the row opens
+    const element = await revealElement(() => {
+      const field = findFieldElement(plan.path, root)
+      return field && isRendered(field) ? field : null
+    }, {
       root,
       ancestors: ancestorPaths(plan.path),
     })

@@ -195,6 +195,24 @@ describe('runFocusPlan', () => {
     expect(form.setDocFieldPreferences).toHaveBeenCalledWith('team', { collapsed: ['a'] })
   })
 
+  it('a row collapsed this session: waits until the row shows its hidden field, then focuses it', async () => {
+    // Payload keeps a collapsed row's fields in the DOM under a display:none container
+    document.body.innerHTML = `<div class="row-content" style="display:none">${input('team.1.name')}</div>`
+    const form = api({ team: [{ id: 'a', collapsed: false }, { id: 'b', collapsed: true }] })
+    form.dispatchFields.mockImplementation(() => {
+      setTimeout(() => document.querySelector<HTMLElement>('.row-content')!.style.removeProperty('display'), 20)
+    })
+    // Browsers ignore focus() on a hidden input (jsdom doesn't), so check when focus() runs
+    const shownAtFocus: boolean[] = []
+    const focus = vi.spyOn(HTMLElement.prototype, 'focus').mockImplementation(function (this: HTMLElement) {
+      shownAtFocus.push(!this.closest<HTMLElement>('.row-content')?.style.display)
+    })
+    const done = await runFocusPlan({ path: 'team.1.name', steps: [{ type: 'row', path: 'team', index: 1 }] }, form)
+    focus.mockRestore()
+    expect(done).toBe(true)
+    expect(shownAtFocus).toEqual([true])
+  })
+
   it('leaves open rows alone', () => {
     const form = api({ team: [{ id: 'a', collapsed: false }] })
     expandRow(form, 'team', 0)

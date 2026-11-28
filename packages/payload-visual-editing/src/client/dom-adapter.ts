@@ -151,6 +151,18 @@ const INPUTS = 'input:not([type=hidden]), textarea, select, [contenteditable=tru
 
 /** The element to focus for a field: the field itself if it is an input, else an input or control
  * inside it, else in its wrapper (upload fields render their buttons next to the id element). */
+/**
+ * False while the element or an ancestor is `display: none`. A row collapsed during the session
+ * keeps its fields in the DOM, hidden, and a hidden input can't take focus.
+ */
+export function isRendered(element: Element): boolean {
+  const view = element.ownerDocument.defaultView
+  for (let node: Element | null = element; node; node = node.parentElement) {
+    if (view?.getComputedStyle(node).display === 'none') return false
+  }
+  return true
+}
+
 function focusTarget(element: Element, wrapper: Element): HTMLElement | null {
   // In this order: an input, a button (e.g. an upload's edit button), a link
   for (const selector of [INPUTS, 'button:not([disabled])', 'a[href]']) {
