@@ -54,6 +54,22 @@ describe('standalone (not in an iframe)', () => {
     expect(button.style.display).toBe('none')
   })
 
+  it('uses the brand green with white text by default', () => {
+    overlay = createOverlay({ serverURL: ADMIN })
+    const { outline, button } = ui()
+    expect(outline.style.borderColor).toBe('rgb(22, 139, 73)')
+    expect(button.style.backgroundColor).toBe('rgb(22, 139, 73)')
+    expect(button.style.color).toBe('rgb(255, 255, 255)')
+  })
+
+  it('color sets the outline and button background, textColor the button text', () => {
+    overlay = createOverlay({ serverURL: ADMIN, color: '#7c3aed', textColor: '#111827' })
+    const { outline, button } = ui()
+    expect(outline.style.borderColor).toBe('rgb(124, 58, 237)')
+    expect(button.style.backgroundColor).toBe('rgb(124, 58, 237)')
+    expect(button.style.color).toBe('rgb(17, 24, 39)')
+  })
+
   it('the pointer can cross a gap on its way to the button', async () => {
     vi.useFakeTimers()
     overlay = createOverlay({ serverURL: ADMIN })

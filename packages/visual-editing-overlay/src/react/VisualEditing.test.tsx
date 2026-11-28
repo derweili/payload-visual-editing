@@ -31,4 +31,19 @@ describe('<VisualEditing />', () => {
     await act(async () => root.unmount())
     expect(layers()).toHaveLength(0)
   })
+
+  it('passes color and textColor to the overlay', async () => {
+    const container = document.createElement('div')
+    document.body.append(container)
+    const root = createRoot(container)
+
+    await act(async () =>
+      root.render(<VisualEditing color="#7c3aed" textColor="#111827" serverURL="http://localhost:3000" />),
+    )
+    const button = layers()[0]!.querySelector('button')!
+    expect(button.style.backgroundColor).toBe('rgb(124, 58, 237)')
+    expect(button.style.color).toBe('rgb(17, 24, 39)')
+
+    await act(async () => root.unmount())
+  })
 })
