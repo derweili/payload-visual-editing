@@ -47,7 +47,8 @@ Also exported: `DEFAULT_EXCLUDE`, `ENCODE_CONTEXT_KEY` (`'encodeSourceMaps'`),
 | Option | Default | |
 | --- | --- | --- |
 | `label` | `"Edit"` | Button text |
-| `color` | a blue | Outline and button colour |
+| `color` | `"#168b49"` (green) | Outline and button background |
+| `textColor` | `"#fff"` | Button text |
 | `adminRoute` | `"/admin"` | Payload's `routes.admin` |
 | `serverURL` | page origin | Admin origin when on another domain |
 | `openIn` | `"new-tab"` | `"same-tab"` navigates instead (outside Live Preview) |

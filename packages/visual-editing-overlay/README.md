@@ -45,7 +45,8 @@ through `postMessage`.
 | Option | Default | |
 | --- | --- | --- |
 | `label` | `"Edit"` | Text of the button |
-| `color` | a blue | Outline and button colour |
+| `color` | `"#168b49"` (green) | Highlight colour: the outline and the button's background |
+| `textColor` | `"#fff"` | Text colour of the button |
 | `adminRoute` | `"/admin"` | Payload's `routes.admin` |
 | `serverURL` | the page's origin | Origin of the admin, when it runs on another domain |
 | `openIn` | `"new-tab"` | Outside the Live Preview: `"same-tab"` navigates instead |

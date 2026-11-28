@@ -10,10 +10,10 @@ export type VisualEditingProps = Omit<OverlayOptions, 'root'>
  * Mount in Draft Mode only, e.g. in the root layout:
  * `{draft && <VisualEditing label="Bearbeiten" />}`. Renders nothing itself.
  */
-export function VisualEditing({ adminRoute, serverURL, openIn, handshakeTimeout, label, color }: VisualEditingProps): null {
+export function VisualEditing({ adminRoute, serverURL, openIn, handshakeTimeout, label, color, textColor }: VisualEditingProps): null {
   useEffect(() => {
-    const overlay = createOverlay({ adminRoute, serverURL, openIn, handshakeTimeout, label, color })
+    const overlay = createOverlay({ adminRoute, serverURL, openIn, handshakeTimeout, label, color, textColor })
     return () => overlay.destroy()
-  }, [adminRoute, serverURL, openIn, handshakeTimeout, label, color])
+  }, [adminRoute, serverURL, openIn, handshakeTimeout, label, color, textColor])
   return null
 }

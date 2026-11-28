@@ -166,7 +166,7 @@ function focusTarget(element: Element, wrapper: Element): HTMLElement | null {
  * content still changes the layout (see keep-in-view.ts), then highlights it briefly. The
  * highlight waits until the page stopped moving, so it doesn't slide across the screen.
  */
-export function focusFieldElement(element: Element, highlightColor = '#2563eb'): void {
+export function focusFieldElement(element: Element, highlightColor = '#168b49'): void {
   element.scrollIntoView?.({ block: 'center', behavior: 'smooth' })
   const wrapper = element.closest(`.${FIELD_CLASS}`) ?? element
   const target = focusTarget(element, wrapper)

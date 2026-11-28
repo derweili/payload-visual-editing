@@ -9,6 +9,9 @@ import {
 import { findTarget, scanTargets, type Targets } from './scan.ts'
 
 export const OVERLAY_ATTR = 'data-pve-overlay'
+/** The brand green of the docs; white text on it has a 4.6:1 contrast (WCAG AA). */
+export const DEFAULT_COLOR = '#168b49'
+export const DEFAULT_TEXT_COLOR = '#fff'
 
 export interface OverlayOptions {
   /** Where to look for editable content. Default: `document.body`. */
@@ -23,8 +26,10 @@ export interface OverlayOptions {
   handshakeTimeout?: number
   /** Text of the edit button. Default: "Edit". */
   label?: string
-  /** Outline and button colour. Default: a blue that reads on light and dark pages. */
+  /** Highlight colour: the outline and the button's background. Default: "#168b49" (green). */
   color?: string
+  /** Text colour of the button. Default: "#fff". */
+  textColor?: string
 }
 
 export interface Overlay {
@@ -61,15 +66,20 @@ export function createOverlay(options: OverlayOptions = {}): Overlay {
   const layer = document.createElement('div')
   layer.setAttribute(OVERLAY_ATTR, '')
   layer.style.cssText = 'position:fixed;inset:0;pointer-events:none;z-index:2147483647;'
-  const color = options.color ?? '#2563eb'
+  const color = options.color ?? DEFAULT_COLOR
+  const textColor = options.textColor ?? DEFAULT_TEXT_COLOR
   const outline = document.createElement('div')
-  outline.style.cssText = `position:fixed;display:none;box-sizing:border-box;border:2px solid ${color};border-radius:${RADIUS};`
+  outline.style.cssText = `position:fixed;display:none;box-sizing:border-box;border:2px solid;border-radius:${RADIUS};`
+  outline.style.borderColor = color
   const button = document.createElement('button')
   button.type = 'button'
   button.textContent = options.label ?? 'Edit'
   button.style.cssText =
     `position:fixed;display:none;pointer-events:auto;margin:0;padding:2px 8px;border:0;` +
-    `background:${color};color:#fff;font:600 12px/1.5 system-ui,sans-serif;cursor:pointer;`
+    `font:600 12px/1.5 system-ui,sans-serif;cursor:pointer;`
+  // Set apart from cssText: a colour value can't add other declarations
+  button.style.background = color
+  button.style.color = textColor
   // appendChild, not append: in apps with Cloudflare's worker types, `Element.append` is HTMLRewriter's
   layer.appendChild(outline)
   layer.appendChild(button)
