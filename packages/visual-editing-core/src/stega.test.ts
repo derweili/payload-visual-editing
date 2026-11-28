@@ -98,7 +98,7 @@ describe('stegaDecode / stegaDecodeAll', () => {
   })
 
   it('ignores foreign stega payloads', () => {
-    const foreign = vercelStegaCombine('Jane', { origin: 'sanity.io', href: '/studio' }, false)
+    const foreign = vercelStegaCombine('Jane', { origin: 'other-cms.example', href: '/edit' }, false)
     expect(hasStega(foreign)).toBe(true)
     expect(stegaDecode(foreign)).toBeUndefined()
     expect(stegaDecodeAll(foreign)).toEqual([])
