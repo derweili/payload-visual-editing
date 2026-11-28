@@ -1,9 +1,12 @@
 # stegaClean pitfalls
 
-Encoded strings look normal but aren't equal to their visible text:
+In Draft Mode, every encoded string from Payload carries invisible characters after its visible
+text. `page.title` renders as "Home", but it isn't equal to `'Home'`:
 
 ```ts
-'Home' === 'Home​…' // false
+// In Draft Mode
+page.title === 'Home' // false: invisible characters follow "Home"
+stegaClean(page.title) === 'Home' // true
 ```
 
 Use `stegaClean(value)` wherever a string is used for more than display. It works on strings,
@@ -30,16 +33,6 @@ default. Excluded fields still get a source tag, so they stay clickable through 
 - **Form values:** `<option value>`, hidden inputs, anything submitted back.
 - **Parsing and measuring:** `JSON.parse`, `Number()`, `new Date()`, `length`, truncation.
 - **`split` and `trim`:** see below.
-
-```tsx {7}
-// `theme` is a text field (select fields are never encoded, only tagged)
-
-// ❌ never matches in Draft Mode
-if (block.theme === 'dark') { … }
-
-// ✅
-if (stegaClean(block.theme) === 'dark') { … }
-```
 
 ```ts {5-6}
 // ✅ metadata
