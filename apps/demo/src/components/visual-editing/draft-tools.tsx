@@ -13,7 +13,7 @@ export async function DraftTools() {
   if (!isEnabled) return null
   return (
     <>
-      <VisualEditing label="Edit" color="#4f46e5" />
+      <VisualEditing label="Edit" />
       <LivePreviewRefresh />
       <DraftModeBanner />
     </>
