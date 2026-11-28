@@ -1,6 +1,6 @@
 {
   "name": "@derweili/payload-visual-editing-core",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Shared protocol, stega and path helpers for Payload visual editing",
   "keywords": [
     "payload",
