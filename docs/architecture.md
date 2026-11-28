@@ -1,6 +1,6 @@
 # Architecture
 
-Sanity-style visual editing for Payload 3: an editor clicks an element in the site preview (in its
+Visual editing for Payload 3: an editor clicks an element in the site preview (in its
 own tab or in Payload's Live Preview) and lands on the right document with the right field focused,
 including fields inside tabs, groups, arrays and blocks.
 
