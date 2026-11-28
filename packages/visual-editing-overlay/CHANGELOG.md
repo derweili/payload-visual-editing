@@ -1,5 +1,14 @@
 # @derweili/payload-visual-editing-overlay
 
+## 0.1.2
+
+### Patch Changes
+
+- [#10](https://github.com/derweili/payload-visual-editing/pull/10) [`53bd748`](https://github.com/derweili/payload-visual-editing/commit/53bd7486fe30d9c009d65a876ef6230e49084202) Thanks [@derweili](https://github.com/derweili)! - Overlay: new `textColor` option for the edit button's text, next to `color` (outline and button background). The default highlight is now the docs' brand green `#168b49` with white text, instead of blue. The admin's field highlight uses the same green.
+
+- Updated dependencies []:
+  - @derweili/payload-visual-editing-core@0.1.2
+
 ## 0.1.1
 
 ### Patch Changes

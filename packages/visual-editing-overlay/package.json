@@ -1,6 +1,6 @@
 {
   "name": "@derweili/payload-visual-editing-overlay",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Frontend overlay for Payload visual editing: outlines, edit buttons, links back to the admin",
   "keywords": [
     "payload",
